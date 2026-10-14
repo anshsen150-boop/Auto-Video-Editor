@@ -1,0 +1,22 @@
+name: Make Video
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out files
+      uses: actions/checkout@v3
+
+    - name: Install FFmpeg
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+    - name: Create Video
+      run: ffmpeg -loop 1 -i image.png -c:v libx264 -t 5 -pix_fmt yuv420p out.mp4
+
+    - name: Upload Video
+      uses: actions/upload-artifact@v3
+      with:
+        name: Final-Video
+        path: out.mp4
+        
